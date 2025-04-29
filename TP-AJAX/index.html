@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Auteurs et Livres</title>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header>
+    <h1>Bibliothèque Numérique</h1>
+  </header>
+
+  <div class="container">
+    <div class="section fade-in" style="animation-delay: 0.1s;">
+      <h2><i class="fas fa-user-pen"></i> Auteurs</h2>
+      <div class="loading" id="auteursLoading">
+        <i class="fas fa-spinner"></i>
+      </div>
+      <table id="auteursTable">
+        <thead><tr><th>Nom de l'auteur</th></tr></thead>
+        <tbody></tbody>
+      </table>
+    </div>
+
+    <div class="section fade-in" style="animation-delay: 0.3s;">
+      <h2><i class="fas fa-book"></i> Œuvres littéraires</h2>
+      <div class="loading" id="livresLoading">
+        <i class="fas fa-spinner"></i>
+      </div>
+
+      <div id="livresContent">
+        <div class="empty-state" id="emptyState">
+          <i class="fas fa-book-open"></i>
+          <p>Sélectionnez un auteur pour voir ses œuvres</p>
+        </div>
+        <ul id="livresList"></ul>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Charger les auteurs au démarrage
+    $(document).ready(function () {
+      // Afficher le chargement
+      $("#auteursLoading").show();
+      
+      $.get("get_auteurs.php", function (data) {
+        $("#auteursLoading").hide();
+        
+        let auteurs = JSON.parse(data);
+        if (auteurs.length === 0) {
+          $("#auteursTable").hide();
+          $("#auteursTable").after('<div class="empty-state"><i class="fas fa-users-slash"></i><p>Aucun auteur disponible</p></div>');
+        } else {
+          auteurs.forEach(auteur => {
+            $("#auteursTable tbody").append(
+              `<tr data-id="${auteur.id}" class="auteur"><td>${auteur.nom}</td></tr>`
+            );
+          });
+        }
+      }).fail(function() {
+        $("#auteursLoading").hide();
+        $("#auteursTable").hide();
+        $("#auteursTable").after('<div class="empty-state"><i class="fas fa-triangle-exclamation"></i><p>Impossible de charger les auteurs</p></div>');
+      });
+
+      // Lorsqu'on clique sur un auteur
+      $(document).on('click', '.auteur', function () {
+        // Mettre en surbrillance l'auteur sélectionné
+        $(".auteur").removeClass("selected");
+        $(this).addClass("selected");
+        
+        let id = $(this).data('id');
+        
+        // Cacher l'état vide et afficher le chargement
+        $("#emptyState").hide();
+        $("#livresList").hide();
+        $("#livresLoading").show();
+        
+        $.get("get_livres.php", { idAuteur: id }, function (data) {
+          $("#livresLoading").hide();
+          $("#livresList").show();
+          
+          let livres = JSON.parse(data);
+          $("#livresList").empty();
+          
+          if (livres.length === 0) {
+            $("#livresList").after('<div class="empty-state"><i class="fas fa-book-open"></i><p>Aucune œuvre disponible pour cet auteur</p></div>');
+          } else {
+            livres.forEach(livre => {
+              $("#livresList").append(`<li>${livre.titre}</li>`);
+            });
+          }
+        }).fail(function() {
+          $("#livresLoading").hide();
+          $("#livresList").after('<div class="empty-state"><i class="fas fa-triangle-exclamation"></i><p>Impossible de charger les livres</p></div>');
+        });
+      });
+    });
+  </script>
+</body>
+</html>
+

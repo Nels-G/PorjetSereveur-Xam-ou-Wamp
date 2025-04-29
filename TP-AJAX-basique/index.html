@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Auteurs et Livres</title>
+  <!-- jQuery permet de faire de l'AJAX facilement -->
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+
+  <h2>Liste des auteurs</h2>
+  <!-- Tableau vide, on remplira avec les auteurs depuis PHP -->
+  <table border="1" id="auteursTable">
+    <thead>
+      <tr><th>Nom</th></tr>
+    </thead>
+    <tbody>
+      <!-- Les lignes d'auteurs seront ajoutées ici dynamiquement -->
+    </tbody>
+  </table>
+
+  <h2>Livres de l'auteur</h2>
+  <ul id="livresList">
+    <!-- Les livres s'afficheront ici quand on clique sur un auteur -->
+  </ul>
+
+  <script>
+    // Dès que la page est chargée
+    $(document).ready(function () {
+      // On demande à PHP la liste des auteurs
+      $.get("get_auteurs.php", function (data) {
+        let auteurs = JSON.parse(data); // On transforme le JSON en tableau JS
+        // Pour chaque auteur, on ajoute une ligne dans le tableau HTML
+        auteurs.forEach(auteur => {
+          $("#auteursTable tbody").append(
+            `<tr data-id="${auteur.id}" class="auteur">
+              <td>${auteur.nom}</td>
+            </tr>`
+          );
+        });
+      });
+
+      // Quand on clique sur une ligne d'auteur
+      $(document).on('click', '.auteur', function () {
+        let id = $(this).data('id'); // Récupère l'id de l'auteur
+        // Envoie une requête AJAX à get_livres.php avec l'id de l'auteur
+        $.get("get_livres.php", { idAuteur: id }, function (data) {
+          let livres = JSON.parse(data); // Convertit en tableau JS
+          $("#livresList").empty(); // Vide la liste avant d'ajouter les nouveaux livres
+          livres.forEach(livre => {
+            $("#livresList").append(`<li>${livre.titre}</li>`);
+          });
+        });
+      });
+    });
+  </script>
+
+</body>
+</html>
