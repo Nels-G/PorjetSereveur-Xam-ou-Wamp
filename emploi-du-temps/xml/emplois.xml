@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<emploiDuTemps>
+    <cours>
+        <jour>Lundi</jour>
+        <heureDebut>08:00</heureDebut>
+        <heureFin>10:00</heureFin>
+        <classe>L1 Info</classe>
+        <module>Programmation</module>
+        <professeur>M. Koffi</professeur>
+        <salle>Salle 101</salle>
+    </cours>
+
+    <cours>
+        <jour>Lundi</jour>
+        <heureDebut>10:00</heureDebut>
+        <heureFin>12:00</heureFin>
+        <classe>L1 Info</classe>
+        <module>Maths Discrètes</module>
+        <professeur>Mme. Adjo</professeur>
+        <salle>Salle 102</salle>
+    </cours>
+
+    <!-- Autres cours... -->
+</emploiDuTemps>

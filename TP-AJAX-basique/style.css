@@ -1,0 +1,263 @@
+    /* Variables CSS pour faciliter les modifications */
+    :root {
+      --bg-primary: #121212;
+      --bg-secondary: #1e1e1e;
+      --accent-color: #8c52ff;
+      --accent-hover: #9d6eff;
+      --text-primary: #ffffff;
+      --text-secondary: #b3b3b3;
+      --card-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+      --transition: all 0.3s ease;
+      --border-radius: 12px;
+      --card-glow: 0 0 15px rgba(140, 82, 255, 0.2);
+    }
+
+    /* Styles de base */
+    body {
+      background: var(--bg-primary);
+      color: var(--text-primary);
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      margin: 0;
+      padding: 0;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      overflow-x: hidden;
+      transition: var(--transition);
+    }
+
+    /* Conteneur principal */
+    .container {
+      width: 90%;
+      max-width: 1200px;
+      margin: 40px auto;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 30px;
+      padding: 20px;
+    }
+
+    /* En-tête stylisé */
+    header {
+      background: linear-gradient(135deg, var(--accent-color) 0%, #6a3093 100%);
+      width: 100%;
+      padding: 30px 0;
+      text-align: center;
+      margin-bottom: 40px;
+      position: relative;
+      overflow: hidden;
+      box-shadow: var(--card-shadow);
+    }
+
+    header h1 {
+      font-size: 36px;
+      font-weight: 700;
+      margin: 0;
+      letter-spacing: 1px;
+      position: relative;
+      z-index: 1;
+    }
+
+    header::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: linear-gradient(
+        to right,
+        rgba(140, 82, 255, 0.1),
+        rgba(140, 82, 255, 0)
+      );
+      transform: rotate(30deg);
+      animation: shimmer 10s infinite linear;
+    }
+
+    @keyframes shimmer {
+      0% { transform: rotate(30deg) translateX(-30%); }
+      100% { transform: rotate(30deg) translateX(30%); }
+    }
+
+    /* Section des auteurs */
+    .section {
+      background: var(--bg-secondary);
+      border-radius: var(--border-radius);
+      padding: 25px;
+      box-shadow: var(--card-shadow);
+      transition: var(--transition);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .section:hover {
+      box-shadow: var(--card-glow);
+      transform: translateY(-5px);
+    }
+
+    .section h2 {
+      margin-top: 0;
+      font-size: 24px;
+      font-weight: 600;
+      color: var(--text-primary);
+      border-bottom: 2px solid var(--accent-color);
+      padding-bottom: 12px;
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+    }
+
+    .section h2 i {
+      margin-right: 10px;
+      color: var(--accent-color);
+    }
+
+    /* Tableau des auteurs */
+    #auteursTable {
+      width: 100%;
+      border-collapse: collapse;
+      border: none;
+      background: transparent;
+    }
+
+    #auteursTable th {
+      text-align: left;
+      padding: 15px;
+      background: rgba(140, 82, 255, 0.1);
+      color: var(--accent-color);
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      border-top-left-radius: 8px;
+      border-top-right-radius: 8px;
+    }
+
+    #auteursTable tbody tr {
+      cursor: pointer;
+      transition: var(--transition);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    #auteursTable tbody tr:hover {
+      background: rgba(140, 82, 255, 0.1);
+    }
+
+    #auteursTable tbody tr:last-child {
+      border-bottom: none;
+    }
+
+    #auteursTable td {
+      padding: 15px;
+      color: var(--text-secondary);
+    }
+
+    #auteursTable tr.selected {
+      background: rgba(140, 82, 255, 0.15);
+    }
+
+    #auteursTable tr.selected td {
+      color: var(--text-primary);
+      font-weight: 500;
+    }
+
+    /* Liste des livres */
+    #livresList {
+      list-style-type: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    #livresList li {
+      padding: 15px;
+      margin-bottom: 10px;
+      background: rgba(255, 255, 255, 0.03);
+      border-radius: 8px;
+      transition: var(--transition);
+      border-left: 3px solid transparent;
+      display: flex;
+      align-items: center;
+    }
+
+    #livresList li:hover {
+      background: rgba(255, 255, 255, 0.05);
+      border-left: 3px solid var(--accent-color);
+    }
+
+    #livresList li::before {
+      content: '\f02d';
+      font-family: 'Font Awesome 6 Free';
+      font-weight: 900;
+      margin-right: 12px;
+      color: var(--accent-color);
+    }
+
+    /* Message quand aucun livre n'est sélectionné */
+    .empty-state {
+      text-align: center;
+      padding: 40px 20px;
+      color: var(--text-secondary);
+    }
+
+    .empty-state i {
+      font-size: 40px;
+      margin-bottom: 15px;
+      color: rgba(140, 82, 255, 0.3);
+    }
+
+    /* Animation de chargement */
+    .loading {
+      display: none;
+      text-align: center;
+      padding: 20px;
+    }
+
+    .loading i {
+      color: var(--accent-color);
+      font-size: 24px;
+      animation: spin 1s infinite linear;
+    }
+
+    @keyframes spin {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+
+    /* Responsive design */
+    @media (max-width: 768px) {
+      .container {
+        grid-template-columns: 1fr;
+      }
+      
+      header h1 {
+        font-size: 28px;
+      }
+    }
+
+    /* Animation d'apparition des éléments */
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .fade-in {
+      animation: fadeIn 0.5s ease forwards;
+    }
+
+    /* Personnalisation de la scrollbar */
+    ::-webkit-scrollbar {
+      width: 8px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: var(--bg-secondary);
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: var(--accent-color);
+      border-radius: 10px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      background: var(--accent-hover);
+    }
